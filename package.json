@@ -1,0 +1,20 @@
+{
+  "name": "klyrics",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "punycode": "^2.1.0",
+    "react": "^16.2.0",
+    "react-autobind": "^1.0.6",
+    "react-autosuggest": "^9.3.4",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.1",
+    "react-youtube-player": "^2.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

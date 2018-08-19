@@ -1,0 +1,13 @@
+.Player {
+    flex: 0 0 auto;
+
+    display: flex;
+}
+
+.Player--controls {
+    flex: 1 1 auto;
+}
+
+.Player--iframe-container {
+    flex: 0 0 auto;
+}
