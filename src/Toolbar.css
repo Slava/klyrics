@@ -1,35 +1,32 @@
 .Toolbar {
     flex: 0 0 auto;
-    height: 100px;
+}
+
+.Toolbar .search-icon {
+    font-size: 2em;
+    margin-right: 0.5em;
+}
+
+.Toolbar .close-icon-button {
+    color: white;
+    margin-left: 1em;
 }
 
 .react-autosuggest__container {
+  width: 100%;
   position: relative;
 }
 
-.react-autosuggest__input {
-  width: 240px;
-  height: 30px;
-  padding: 10px 20px;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  -webkit-appearance: none;
+.react-autosuggest__input:before {
+    border-bottom-color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.react-autosuggest__input--focused {
-  outline: none;
+.react-autosuggest__input:after {
+    border-bottom-color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.react-autosuggest__input::-ms-clear {
-  display: none;
-}
-
-.react-autosuggest__input--open {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+.react-autosuggest__input input {
+  color: white;
 }
 
 .react-autosuggest__suggestions-container {
@@ -39,11 +36,11 @@
 .react-autosuggest__suggestions-container--open {
   display: block;
   position: absolute;
-  top: 51px;
-  width: 280px;
+  top: 31px;
+  width: 100%;
   border: 1px solid #aaa;
   background-color: #fff;
-  font-family: 'Open Sans', sans-serif;
+  color: black;
   font-weight: 300;
   font-size: 16px;
   border-bottom-left-radius: 4px;

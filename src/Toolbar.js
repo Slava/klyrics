@@ -4,7 +4,19 @@ import autobind from 'react-autobind';
 
 import './Toolbar.css';
 
-class Toolbar extends Component {
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
+import TextField from '@material-ui/core/TextField';
+import Popper from '@material-ui/core/Popper';
+import Paper from '@material-ui/core/Paper';
+
+
+class ToolbarComp extends Component {
   constructor() {
     super();
 
@@ -12,6 +24,8 @@ class Toolbar extends Component {
       suggestions: [],
       value: '',
     };
+
+    this.popperNode = null;
 
     autobind(this);
   }
@@ -30,6 +44,25 @@ class Toolbar extends Component {
       });
   }
 
+  renderInputComponent(inputProps) {
+    const { inputRef = () => {}, ref, ...other } = inputProps;
+
+    return (
+      <TextField
+        fullWidth
+        InputProps={{
+          inputRef: node => {
+            ref(node);
+            inputRef(node);
+            this.popperNode = node.parentElement;
+          },
+          className: "react-autosuggest__input"
+        }}
+        {...other}
+        />
+    );
+  }
+
   renderSuggestion(suggestion) {
     return (
       <span>
@@ -38,7 +71,19 @@ class Toolbar extends Component {
     );
   }
 
+  renderSuggestionsContainer(options) {
+    return (
+      <Popper anchorEl={this.popperNode} open={Boolean(options.children)} placement="bottom">
+        <Paper square {...options.containerProps} style={{ width: this.popperNode ? this.popperNode.clientWidth : null }} >
+          {options.children}
+        </Paper>
+      </Popper>
+    );
+  }
+
   onClear() {
+    // do not clear on things like click away
+    return;
     this.setState({
       value: '',
     });
@@ -58,18 +103,27 @@ class Toolbar extends Component {
 
     return (
         <div className="Toolbar">
-            <Autosuggest
-              suggestions={this.state.suggestions}
-              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-              onSuggestionsClearRequested={this.onClear}
-              onSuggestionSelected={this.onSelected}
-              getSuggestionValue={(suggestion) => suggestion[0]}
-              renderSuggestion={this.renderSuggestion}
-              inputProps={inputProps}
-              />
+          <AppBar position="static">
+            <Toolbar>
+              <SearchIcon className="search-icon"/>
+              <Autosuggest
+                suggestions={this.state.suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onClear}
+                onSuggestionSelected={this.onSelected}
+                getSuggestionValue={(suggestion) => suggestion[0]}
+                renderSuggestion={this.renderSuggestion}
+                inputProps={inputProps}
+                renderInputComponent={this.renderInputComponent}
+                />
+              <IconButton className="close-icon-button">
+                <CloseIcon className="close-icon"/>
+              </IconButton>
+            </Toolbar>
+          </AppBar>
         </div>
     );
   }
 }
 
-export default Toolbar;
+export default ToolbarComp;
