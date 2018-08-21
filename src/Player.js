@@ -128,9 +128,9 @@ class Player extends Component {
     return (
       <div className="Player">
         <AppBar position="static">
-          <Toolbar disableGutters={true}>
+          <Toolbar disableGutters={true} className="Player--toolbar">
             <div className="Player--controls">
-                <IconButton aria-label="Play/pause">
+              <IconButton aria-label="Play/pause">
                   {
                     playback
                       ? <PauseCircleIcon onClick={playPause} />

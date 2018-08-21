@@ -8,6 +8,10 @@
     display: flex;
 }
 
+.Player--toolbar {
+    min-height: 50px !important;
+}
+
 .Player--controls {
     flex: 1 1 auto;
     flex-direction: row;
@@ -22,8 +26,10 @@
 }
 
 .Player--controls button {
+    font-size: 1.2em;
     color: white;
     padding-bottom: 5px;
+    margin-right: 10px;
 }
 
 .Player--controls .time-stamp {
@@ -50,7 +56,7 @@
     display: inline-block;
     padding-left: 0px;
     padding-right: 15px;
-    padding-top: 15px;
+    padding-top: 20px;
 
     flex: 1;
 }
