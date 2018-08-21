@@ -24,10 +24,31 @@ class Player extends Component {
       currentTime: 0,
       duration: 0,
       catchUp: false,
+      reseting: false,
     };
     this.yp = React.createRef();
     this.debounceSeek = debounce(this.debounceSeek, 200);
     autobind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.getDerivedStateFromProps(nextProps);
+  }
+
+  getDerivedStateFromProps(nextProps) {
+    if (nextProps.videoId !== this.props.videoId) {
+      this.setState({
+        resetting: true,
+      },
+      () => {
+        this.setState({
+          currentTime: 0,
+          catchUp: true,
+          playback: true,
+          resetting: false,
+        });
+      });
+    }
   }
 
   componentDidMount() {
@@ -83,22 +104,26 @@ class Player extends Component {
     const totalDuration = formatTime(duration);
     const progressValue = currentTime / duration * 100;
 
+    const { resetting, playback } = this.state;
+    const { videoId } = this.props;
+
     const youtubePlayer = (
       <YoutubePlayer
-        videoId={this.props.videoId}
-        playbackState={this.state.playback ? 'playing' : 'paused'}
+        videoId={videoId}
+        playbackState={playback ? 'playing' : 'paused'}
         configuration={
           {
             showinfo: 0,
             controls: 0,
-            modestBranding: 1
+            modestBranding: 1,
+            autoplay: 1,
           }
         }
         ref={this.yp}
         />
     );
 
-    const playerEl = this.props.videoId ? youtubePlayer : <img src={PlaceholderImage} />;
+    const playerEl = videoId && !resetting ? youtubePlayer : <img src={PlaceholderImage} />;
 
     return (
       <div className="Player">
@@ -107,7 +132,7 @@ class Player extends Component {
             <div className="Player--controls">
                 <IconButton aria-label="Play/pause">
                   {
-                    this.state.playback
+                    playback
                       ? <PauseCircleIcon onClick={playPause} />
                       : <PlayCircleIcon onClick={playPause} />
                   }

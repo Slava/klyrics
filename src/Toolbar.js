@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import autobind from 'react-autobind';
+import debounce from 'debounce';
 
 import './Toolbar.css';
 
@@ -23,11 +24,13 @@ class ToolbarComp extends Component {
     this.state = {
       suggestions: [],
       value: '',
+      searchVersion: 0,
     };
 
     this.popperNode = null;
 
     autobind(this);
+    this.onSuggestionsFetchRequested = debounce(this.onSuggestionsFetchRequested, 150);
   }
 
   onChange(event, {newValue}) {
@@ -37,10 +40,12 @@ class ToolbarComp extends Component {
   }
 
   onSuggestionsFetchRequested({ value }) {
+    const version = this.state.searchVersion;
     fetch('//localhost:8000/search?q=' + value)
       .then(res => res.json())
       .then(json => {
-        this.setState({ suggestions: json })
+        if (this.state.searchVersion === version)
+          this.setState({ suggestions: json })
       });
   }
 
@@ -82,7 +87,10 @@ class ToolbarComp extends Component {
   }
 
   onClear() {
-    // do not clear on things like click away
+    this.setState({
+      searchVersion: this.state.searchVersion + 1,
+    });
+    // do not clear the input on things like click away
     return;
     this.setState({
       value: '',

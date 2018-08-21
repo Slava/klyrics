@@ -8,10 +8,10 @@
     "@material-ui/lab": "^1.0.0-alpha.11",
     "debounce": "^1.2.0",
     "punycode": "^2.1.0",
-    "react": "^16.2.0",
+    "react": "^16.4.0",
     "react-autobind": "^1.0.6",
     "react-autosuggest": "^9.3.4",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.4.0",
     "react-scripts": "1.1.1",
     "react-youtube-player": "^2.0.1"
   },
