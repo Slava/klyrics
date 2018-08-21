@@ -1,7 +1,10 @@
-
 .Lyrics {
     flex: 1 1 auto;
     overflow: auto;
+}
 
+.Lyrics--content {
     display: flex;
+
+    padding-bottom: var(--player-height);
 }

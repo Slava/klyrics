@@ -5,6 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^2.0.3",
+    "@material-ui/lab": "^1.0.0-alpha.11",
+    "debounce": "^1.2.0",
     "punycode": "^2.1.0",
     "react": "^16.2.0",
     "react-autobind": "^1.0.6",

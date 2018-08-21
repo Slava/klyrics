@@ -1,13 +1,60 @@
 .Player {
-    flex: 0 0 auto;
+    position: fixed;
+    z-index: 1200;
+    bottom: 0;
+    width: 100%;
+    height: var(--player-height);
 
     display: flex;
 }
 
 .Player--controls {
     flex: 1 1 auto;
+    flex-direction: row;
+
+    display: flex;
 }
 
 .Player--iframe-container {
     flex: 0 0 auto;
+    height: var(--player-height);
+    width: calc(var(--player-height) * 16 / 9)
+}
+
+.Player--controls button {
+    color: white;
+    padding-bottom: 5px;
+}
+
+.Player--controls .time-stamp {
+    font-size: 0.7em;
+    color: rgba(255, 255, 255, 0.6);
+    display: inline-block;
+    width: 50px;
+}
+
+.Player--controls .stamps {
+    width: 0;
+    height: 0;
+    overflow: visible;
+    position: relative;
+    top: 20px;
+}
+
+.Player--controls .stamps.end {
+    right: calc(50px + 15px);
+    text-align: right;
+}
+
+.Player--controls .progress-bar {
+    display: inline-block;
+    padding-left: 0px;
+    padding-right: 15px;
+    padding-top: 15px;
+
+    flex: 1;
+}
+
+.Player--controls .progress-bar > div > * {
+    background-color: white;
 }

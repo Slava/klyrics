@@ -34,11 +34,11 @@ class Lyrics extends Component {
 
     return (
         <div className="Lyrics">
-        {
-          Object.values(this.state.lyrics || {}).map(
-            text => <div dangerouslySetInnerHTML={{__html: text}}/>
-          )
-        }
+          <div className="Lyrics--content">{
+              Object.values(this.state.lyrics || {}).map(
+                text => <div dangerouslySetInnerHTML={{__html: text}}/>
+              )
+          }</div>
         </div>
     );
   }
