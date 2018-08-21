@@ -7,14 +7,10 @@ import './Toolbar.css';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
-import Popper from '@material-ui/core/Popper';
-import Paper from '@material-ui/core/Paper';
 
 
 class ToolbarComp extends Component {
@@ -26,8 +22,6 @@ class ToolbarComp extends Component {
       value: '',
       searchVersion: 0,
     };
-
-    this.popperNode = null;
 
     autobind(this);
     this.onSuggestionsFetchRequested = debounce(this.onSuggestionsFetchRequested, 150);
@@ -59,7 +53,6 @@ class ToolbarComp extends Component {
           inputRef: node => {
             ref(node);
             inputRef(node);
-            this.popperNode = node.parentElement;
           },
           className: "react-autosuggest__input"
         }}
@@ -76,22 +69,11 @@ class ToolbarComp extends Component {
     );
   }
 
-  renderSuggestionsContainer(options) {
-    return (
-      <Popper anchorEl={this.popperNode} open={Boolean(options.children)} placement="bottom">
-        <Paper square {...options.containerProps} style={{ width: this.popperNode ? this.popperNode.clientWidth : null }} >
-          {options.children}
-        </Paper>
-      </Popper>
-    );
-  }
-
   onClear() {
     this.setState({
       searchVersion: this.state.searchVersion + 1,
     });
-    // do not clear the input on things like click away
-    return;
+
     this.setState({
       value: '',
     });

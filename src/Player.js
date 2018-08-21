@@ -6,10 +6,8 @@ import YoutubePlayer from 'react-youtube-player';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayCircleIcon from '@material-ui/icons/PlayCircleFilled';
 import PauseCircleIcon from '@material-ui/icons/PauseCircleFilled';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/lab/Slider';
 
@@ -123,7 +121,7 @@ class Player extends Component {
         />
     );
 
-    const playerEl = videoId && !resetting ? youtubePlayer : <img src={PlaceholderImage} />;
+    const playerEl = videoId && !resetting ? youtubePlayer : <img alt="placeholder" src={PlaceholderImage} />;
 
     return (
       <div className="Player">

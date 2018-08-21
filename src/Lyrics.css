@@ -19,6 +19,8 @@
 
 .Lyrics--content {
     display: flex;
+    padding: 5px;
+    padding-top: 10px;
 
     padding-bottom: var(--player-height);
 }

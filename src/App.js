@@ -5,7 +5,6 @@ import Player from './Player';
 import Toolbar from './Toolbar';
 import Lyrics from './Lyrics';
 
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -13,7 +12,6 @@ class App extends Component {
     super();
 
     this.state = {
-      tag: null,
       videoId: null,
     };
 
@@ -21,9 +19,7 @@ class App extends Component {
   }
 
   onSelected(tag) {
-    this.setState({
-      tag,
-    });
+    this.props.router.redirectTo(`/${tag}`);
   }
 
   onVideoChange(videoId) {
@@ -36,10 +32,11 @@ class App extends Component {
   }
 
   render() {
+    const tag = this.props.location.params.path;
     return (
       <div className="App">
         <Toolbar onSelected={this.onSelected}/>
-        <Lyrics tag={this.state.tag} onVideoChange={this.onVideoChange}/>
+        <Lyrics tag={tag} onVideoChange={this.onVideoChange}/>
         <Player videoId={this.state.videoId}/>
       </div>
     );
