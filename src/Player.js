@@ -14,10 +14,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/lab/Slider';
 
 import './Player.css';
+import PlaceholderImage from './assets/placeholder.png';
 
 class Player extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       playback: true,
       currentTime: 0,
@@ -31,7 +32,7 @@ class Player extends Component {
 
   componentDidMount() {
     this.interval = setInterval(() => {
-      if (this.yp && this.yp.current.player) {
+      if (this.yp && this.yp.current && this.yp.current.player) {
         this.yp.current.player.getCurrentTime().then(currentTime => {
           if (currentTime) {
             if (this.state.catchUp) {
@@ -62,7 +63,7 @@ class Player extends Component {
 
   handleSliderChange(event, value) {
     const t = (value / 100.0) * this.state.duration;
-    if (this.yp && this.yp.current.player) {
+    if (this.yp && this.yp.current && this.yp.current.player) {
       this.setState({ currentTime: t, catchUp: true });
       this.yp.current.player.seekTo(t, false);
       this.debounceSeek(t);
@@ -81,6 +82,23 @@ class Player extends Component {
     const current = formatTime(currentTime);
     const totalDuration = formatTime(duration);
     const progressValue = currentTime / duration * 100;
+
+    const youtubePlayer = (
+      <YoutubePlayer
+        videoId={this.props.videoId}
+        playbackState={this.state.playback ? 'playing' : 'paused'}
+        configuration={
+          {
+            showinfo: 0,
+            controls: 0,
+            modestBranding: 1
+          }
+        }
+        ref={this.yp}
+        />
+    );
+
+    const playerEl = this.props.videoId ? youtubePlayer : <img src={PlaceholderImage} />;
 
     return (
       <div className="Player">
@@ -103,18 +121,7 @@ class Player extends Component {
                 </div>
             </div>
             <div className="Player--iframe-container">
-              <YoutubePlayer
-                videoId='QqkT2q9x5rw'
-                playbackState={this.state.playback ? 'playing' : 'paused'}
-                configuration={
-                  {
-                    showinfo: 0,
-                    controls: 0,
-                    modestBranding: 1
-                  }
-                }
-                ref={this.yp}
-                />
+              {playerEl}
             </div>
           </Toolbar>
         </AppBar>
