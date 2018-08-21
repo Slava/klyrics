@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
+import autobind from 'react-autobind';
 
-
-import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
-import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter';
-import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight';
-import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import ToggleButton, { ToggleButtonGroup } from '@material-ui/lab/ToggleButton';
 
 import './Lyrics.css';
@@ -22,7 +12,10 @@ class Lyrics extends Component {
     this.state = {
       videoId: null,
       lyrics: null,
+      formats: ['kr', 'tr'],
     };
+
+    autobind(this);
   }
 
   refetch(props) {
@@ -42,41 +35,40 @@ class Lyrics extends Component {
       this.refetch(nextProps);
   }
 
+  handleDisplay(formats) {
+    if (formats && formats.length)
+      this.setState({formats});
+  }
+
   render() {
     if (this.state.videoId)
       this.props.onVideoChange(this.state.videoId);
 
+    const {formats, lyrics} = this.state;
+
+    const mapping = {
+      Korean: 'kr',
+      Romanization: 'rm',
+      Translation: 'tr',
+    };
+
+
     return (
         <div className="Lyrics">
-          <Grid item xs={12} sm={6}>
-            <div>
-              <ToggleButtonGroup value={['bold']} onChange={this.handleFormat}>
-                <ToggleButton value="bold">
-                  <FormatBoldIcon />
-                </ToggleButton>
-                <ToggleButton value="italic">
-                  <FormatItalicIcon />
-                </ToggleButton>
-                <ToggleButton value="underlined">
-                  <FormatUnderlinedIcon />
-                </ToggleButton>
-                <ToggleButton disabled value="color">
-                  <FormatColorFillIcon />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </div>
-            <Typography type="caption" gutterBottom>
-              Multiple Selection
-            </Typography>
-            <Typography type="caption">
-              Logically-grouped options, like Bold, Italic, and Underline, allow multiple options to
-              be selected.
-            </Typography>
-          </Grid>
+          <ToggleButtonGroup value={formats} onChange={this.handleDisplay} className="Lyrics--togglebar">
+            <ToggleButton value="rm">
+              <span className="txt-icon">Rm</span> Roman<span className="ext">ization</span>
+            </ToggleButton>
+            <ToggleButton value="kr">
+              <span className="txt-icon">한</span> Kor<span className="ext">ean</span>
+            </ToggleButton>
+            <ToggleButton value="tr">
+              <span className="txt-icon">Tr</span> Trans<span className="ext">lation</span>
+            </ToggleButton>
+          </ToggleButtonGroup>
           <div className="Lyrics--content">{
-              Object.values(this.state.lyrics || {}).map(
-                text => <div dangerouslySetInnerHTML={{__html: text}}/>
+              Object.keys(lyrics || {}).filter(x => formats.includes(mapping[x])).map(
+                key => <div dangerouslySetInnerHTML={{__html: lyrics[key]}}/>
               )
           }</div>
         </div>

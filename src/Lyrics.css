@@ -3,8 +3,39 @@
     overflow: auto;
 }
 
+.Lyrics--togglebar {
+    width: 100%;
+
+    display: flex;
+}
+
+.Lyrics--togglebar > * {
+    flex: 1;
+}
+
+.info-button {
+    flex: 0;
+}
+
 .Lyrics--content {
     display: flex;
 
     padding-bottom: var(--player-height);
+}
+
+.txt-icon {
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.38);
+    padding: 3px;
+    margin-right: 3px;
+    border-radius: 2px;
+    min-width: 1.3em;
+}
+
+
+@media(max-width: 570px) {
+    .ext {
+        display: none;
+    }
 }
