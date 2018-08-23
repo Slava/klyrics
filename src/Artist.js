@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'simple-react-router';
 import autobind from 'react-autobind';
 
+import Loading from './Loading';
+
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -62,7 +64,7 @@ class Artist extends Component {
 
   render() {
     const {songs, fetching, nextPage} = this.state;
-    if (!songs) return <div>Loading</div>;
+    if (!songs) return <Loading/>;
 
     const processed = songs.filter(song => song.id.indexOf('lyrics-index') === -1).map(song => {
       const matched = song.name.match(/(.*)–(.*)/);
@@ -96,7 +98,7 @@ class Artist extends Component {
             <Typography className="Artist--subtitle" variant="subheading" align="center">{subname}</Typography>
           </div>
           <List className="Artist--song-list">{processed.map(
-              song => <ListItem href={"/" + song.id} button id={song.id} divider="true" component={Link}>
+              song => <ListItem href={"/" + song.id} button id={song.id} divider={true} component={Link}>
                           <Avatar src={song.imgSrc} className="song-cover"/>
                           {song.name}
                           <OpenInNewIcon fontSize="inherit" className="open-new-icon"/>

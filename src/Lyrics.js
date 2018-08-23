@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'simple-react-router';
 import autobind from 'react-autobind';
 
+import Loading from './Loading';
+
 import ToggleButton, { ToggleButtonGroup } from '@material-ui/lab/ToggleButton';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -56,6 +58,7 @@ class Lyrics extends Component {
       videoId: null,
       lyrics: null,
       formats: restoreSettings() || ['kr', 'tr', 'text-size'],
+      fetching: false,
     };
 
     autobind(this);
@@ -64,9 +67,11 @@ class Lyrics extends Component {
   refetch(props) {
     if (!props.tag)
       return;
-    fetch('//localhost:8000/parse?id=' + encodeURI(props.tag))
-      .then(res => res.json())
-      .then(json => this.setState(json));
+    this.setState({fetching: true}, () => {
+      fetch('//localhost:8000/parse?id=' + encodeURI(props.tag))
+        .then(res => res.json())
+        .then(json => this.setState(Object.assign({fetching: false}, json)));
+    });
   }
 
   componentDidMount() {
@@ -85,8 +90,33 @@ class Lyrics extends Component {
     }
   }
 
+  renderSadMessage() {
+    return (
+      <div className="sad-message">
+        <Typography variant="display1">This song is not available T_T</Typography>
+      </div>
+    );
+  }
+
   render() {
-    const {formats, lyrics, artist, artistId, name, videoId, imgSrc} = this.state;
+    const {
+      formats,
+      lyrics,
+      artist,
+      artistId,
+      name,
+      videoId,
+      imgSrc,
+      fetching,
+    } = this.state;
+
+    if (fetching) {
+      return <Loading/>;
+    }
+
+    if (!name) {
+      return this.renderSadMessage();
+    }
 
     if (videoId)
       this.props.onVideoChange(videoId);
