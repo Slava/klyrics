@@ -4,6 +4,7 @@ import autobind from 'react-autobind';
 import ToggleButton, { ToggleButtonGroup } from '@material-ui/lab/ToggleButton';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import FormatSizeIcon from '@material-ui/icons/FormatSize';
 
 import './Lyrics.css';
 
@@ -82,7 +83,7 @@ class Lyrics extends Component {
       { id: 'tr', icon: 'tr', label: 'Tran', ext: 'slation' },
     ];
 
-    const fontSize = '10px';
+    const fontSizeClass = formats.includes('text-size') ? 'large' : 'small';
     const lyricKeys = Object.keys(lyrics || {}).filter(x => formats.includes(mapping[x]));
     let nRows = 0;
     lyricKeys.forEach(key => nRows = Math.max(nRows, lyrics[key].length));
@@ -101,10 +102,12 @@ class Lyrics extends Component {
                              <span className="txt-icon">{icon}</span> {label}<span className="ext">{ext}</span>
                            </ToggleButton>
                         )}
+            <ToggleButton value="text-size" className="format-size-button" onChange={this.handleDisplay}>
+              <FormatSizeIcon/>
+            </ToggleButton>
           </ToggleButtonGroup>
-          <div className="Lyrics--content" style={{fontSize}}>
-        <table>{tableRows}
-            </table>
+          <div className={'Lyrics--content ' + fontSizeClass}>
+            <table>{tableRows}</table>
           </div>
         </Paper>
       </div>

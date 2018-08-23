@@ -17,6 +17,11 @@
     flex: 1;
 }
 
+.Lyrics--togglebar .format-size-button {
+    flex: 0;
+    width: auto;
+}
+
 .info-button {
     flex: 0;
 }
@@ -28,6 +33,44 @@
     background: #F5F5F5;
 
     padding-bottom: var(--player-height);
+}
+
+.Lyrics--content.small {
+    font-size: 16px;
+}
+
+.Lyrics--content.large {
+    font-size: 20px;
+}
+
+@media(max-width: 414px) {
+    .Lyrics--content.small {
+        font-size: 12px;
+    }
+
+    .Lyrics--content.large {
+        font-size: 16px;
+    }
+}
+
+@media(max-width: 375px) {
+    .Lyrics--content.small {
+        font-size: 11px;
+    }
+
+    .Lyrics--content.large {
+        font-size: 15px;
+    }
+}
+
+@media(max-width: 320px) {
+    .Lyrics--content.small {
+        font-size: 10px;
+    }
+
+    .Lyrics--content.large {
+        font-size: 14px;
+    }
 }
 
 .Lyrics--content table {
