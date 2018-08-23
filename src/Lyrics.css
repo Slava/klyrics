@@ -5,6 +5,20 @@
     margin: 1em;
 }
 
+.Lyrics--header .album-art {
+    display: block;
+    max-width: 100px;
+    max-height: 100px;
+    margin: 1em auto;
+}
+
+@media(min-width: 600px) {
+    .Lyrics--header .album-art {
+        max-width: 150px;
+        max-height: 150px;
+    }
+}
+
 .Lyrics--togglebar {
     max-width: 800px;
     width: 100%;

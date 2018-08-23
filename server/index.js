@@ -120,13 +120,15 @@ function getLyrics($) {
 }
 
 function getMeta($) {
+  let imgSrc = null;
   try {
+    const imgSrc = $($('img[title="Album art"]')[0]).attr('src');
     const href = $($('.entry-meta a[rel="category tag"]')[0]).attr('href');
     const tag = href.split('colorcodedlyrics.com/')[1];
-    return { artistId: tag };
+    return { artistId: tag, imgSrc };
   } catch(err) {
     console.log(err);
-    return { artistId: null };
+    return { artistId: null, imgSrc };
   }
 }
 
@@ -137,7 +139,7 @@ app.get('/parse', (req, res) => {
     const videoId = getVideoId($);
     const {artist, name} = getTitle($);
     const lyrics = getLyrics($);
-    const {artistId} = getMeta($);
+    const {artistId, imgSrc} = getMeta($);
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
     res.end(JSON.stringify({
@@ -146,6 +148,7 @@ app.get('/parse', (req, res) => {
       artist,
       name,
       artistId,
+      imgSrc,
     }));
   });
 });
@@ -154,16 +157,23 @@ app.get('/parseArtist', (req, res) => {
   const {id, page} = req.query;
   const pagePart = page ? `/page/${page}` : '';
   request.get(`https://colorcodedlyrics.com/${encodeURI(id)}${pagePart}`, (_, __, text) => {
-    const names = [];
-    text.replace(/"entry-title">.*<a .*href="([^\s]+)".*>(.*)<\/a>/g, (match, url, name) => {
+    const $ = cheerio.load(text);
+    const items = Array.from($('.entry-title a')).map((a) => {
+      const url = a.attribs.href;
       const parts = url.split('/');
       const id = parts[parts.length - 1];
-      names.push([entities.decode(name), id]);
-      return '';
+      const name = $(a).text();
+      const img = $(a.parent.parent.parent).find('img')[0];
+      let imgSrc = null;
+      if (img) {
+        imgSrc = img.attribs.src;
+      }
+
+      return {name, id, imgSrc};
     });
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
-    res.end(JSON.stringify(names));
+    res.end(JSON.stringify(items));
   });
 });
 

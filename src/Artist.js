@@ -5,6 +5,7 @@ import autobind from 'react-autobind';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
@@ -63,10 +64,10 @@ class Artist extends Component {
     const {songs, fetching, nextPage} = this.state;
     if (!songs) return <div>Loading</div>;
 
-    const processed = songs.filter(song => song[1].indexOf('lyrics-index') === -1).map(song => {
-      const matched = song[0].match(/(.*)–(.*)/);
+    const processed = songs.filter(song => song.id.indexOf('lyrics-index') === -1).map(song => {
+      const matched = song.name.match(/(.*)–(.*)/);
       if (matched) {
-        return [matched[2].trim(), song[1]];
+        return Object.assign({}, song, {name: matched[2].trim()});
       }
       return song;
     });
@@ -74,15 +75,15 @@ class Artist extends Component {
     let name;
     let subname;
     try {
-      name = songs[songs.length - 1][0].split(/–/)[0];
-      name = songs[0][0].replace(/Lyrics Index/g, '').trim();
-
+      name = songs[songs.length - 1].name.split(/–/)[0];
+      name = songs[0].name.replace(/Lyrics Index/g, '').trim();
+    } catch (err) {
+    } finally {
       const match = name.match(/(.*)\((.*)\)/);
       if (match) {
         name = match[1];
         subname = match[2];
       }
-    } catch (err) {
     }
 
     const moreButton = nextPage === -1 ? null :
@@ -95,8 +96,9 @@ class Artist extends Component {
             <Typography className="Artist--subtitle" variant="subheading" align="center">{subname}</Typography>
           </div>
           <List className="Artist--song-list">{processed.map(
-              song => <ListItem href={"/" + song[1]} button id={song[1]} divider="true" component={Link}>
-                          {song[0]}
+              song => <ListItem href={"/" + song.id} button id={song.id} divider="true" component={Link}>
+                          <Avatar src={song.imgSrc} className="song-cover"/>
+                          {song.name}
                           <OpenInNewIcon fontSize="inherit" className="open-new-icon"/>
                       </ListItem>)}
           </List>
