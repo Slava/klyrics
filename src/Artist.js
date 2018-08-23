@@ -93,13 +93,11 @@ class Artist extends Component {
           <div className="Artist--header">
             <Typography className="Artist--title" variant="display1" align="center">{name}</Typography>
             <Typography className="Artist--subtitle" variant="subheading" align="center">{subname}</Typography>
-            <Divider/>
           </div>
           <List className="Artist--song-list">{processed.map(
-              song => <ListItem button id={song[1]}>
-                        <Link href={"/" + song[1]}>
+              song => <ListItem href={"/" + song[1]} button id={song[1]} divider="true" component={Link}>
                           {song[0]}
-                          <OpenInNewIcon fontSize="inherit" className="open-new-icon"/></Link>
+                          <OpenInNewIcon fontSize="inherit" className="open-new-icon"/>
                       </ListItem>)}
           </List>
         <div className="load-more-container">
