@@ -24,9 +24,14 @@ const colors = [
 function renderParagraph(paragraph, i) {
   if (!paragraph)
     return null;
+
   return (
     <p id={i}>{
-        paragraph.map((x, i) => x.newline ? <br key={i}/> : <span key={i} style={{color: colors[x.styleId]}}>{x.line}</span>)
+        paragraph.map(
+          (x, i) => x.newline
+            ? <br key={i}/>
+            : <span key={i} style={{color: colors[x.styleId]}}>{x.line}</span>
+        )
     }</p>
   );
 }
@@ -87,7 +92,9 @@ class Lyrics extends Component {
     const lyricKeys = Object.keys(lyrics || {}).filter(x => formats.includes(mapping[x]));
     let nRows = 0;
     lyricKeys.forEach(key => nRows = Math.max(nRows, lyrics[key].length));
-    const tableRows = Array.from(new Array(nRows)).map((_, i) => <tr key={i}>{lyricKeys.map(key => <td key={key}>{renderParagraph(lyrics[key][i], i)}</td>)}</tr>);
+    const tableRows = Array.from(new Array(nRows)).map(
+      (_, i) => <tr key={i}>{lyricKeys.map(
+        key => <td key={key}>{renderParagraph(lyrics[key][i], i)}</td>)}</tr>);
 
     return (
       <div className="Lyrics">
