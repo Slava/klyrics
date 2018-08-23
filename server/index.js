@@ -121,14 +121,22 @@ function getLyrics($) {
 
 function getImage($) {
   try {
-    let albumArt = $('img[title="Album art"]')[0];
+    let albumArt = null;
 
     if (!albumArt) {
       const imgs = $('img').filter(function () {
         const className = this.attribs.class;
         return className && (className.indexOf('wp-image-') !== -1 || className.indexOf('alignright') !== -1);
+      }).filter(function () {
+        const src = this.attribs.src;
+        return src !== 'image.jpg';
       });
-      albumArt = imgs[0];
+
+      const imgs2 = imgs.filter(function () {return this.attribs.class.indexOf('wp-image-') !== -1});
+      if (imgs2.length)
+        albumArt = imgs2[0];
+      else
+        albumArt = imgs[0];
     }
 
     return { imgSrc: albumArt.attribs.src };

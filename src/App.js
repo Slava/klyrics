@@ -7,6 +7,7 @@ import Player from './Player';
 import Toolbar from './Toolbar';
 import Lyrics from './Lyrics';
 import Artist from './Artist';
+import Homepage from './Homepage';
 
 import {APP} from './constants';
 
@@ -51,7 +52,7 @@ class App extends Component {
       case APP.ARTIST:
         return <Artist tag={path}/>;
       case APP.HOMEPAGE:
-        return <div>homepage</div>;
+        return <Homepage/>;
       }
       console.error('no matching app route');
       return null;

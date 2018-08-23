@@ -1,0 +1,11 @@
+.Homepage {
+    padding: 1em;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 3em;
+    margin-bottom: 1em;
+}
+
+.Homepage .Homepage--song-list {
+    margin-bottom: 2em;
+}

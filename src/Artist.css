@@ -10,15 +10,15 @@
     margin-bottom: 0.5em;
 }
 
-.Artist--song-list {
+song-list {
     color: #212121;
 }
 
-.Artist--song-list .song-cover {
+.song-cover {
     margin-right: 0.5em;
 }
 
-.Artist--song-list .open-new-icon {
+.song-list .open-new-icon {
     color: #9E9E9E;
     margin-left: 0.2em;
 }

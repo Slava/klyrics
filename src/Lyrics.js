@@ -143,6 +143,8 @@ class Lyrics extends Component {
 
     const tableClass = lyricKeys.length < 3 ? 'compact' : '';
 
+    //console.log(JSON.stringify({id: this.props.tag, name: artist + " - " + name, imgSrc}));
+
     return (
       <div className="Lyrics">
         <div className="Lyrics--header">

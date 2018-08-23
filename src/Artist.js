@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
@@ -97,16 +96,16 @@ class Artist extends Component {
             <Typography className="Artist--title" variant="display1" align="center">{name}</Typography>
             <Typography className="Artist--subtitle" variant="subheading" align="center">{subname}</Typography>
           </div>
-          <List className="Artist--song-list">{processed.map(
+          <List className="Artist--song-list song-list">{processed.map(
               song => <ListItem href={"/" + song.id} button id={song.id} divider={true} component={Link}>
                           <Avatar src={song.imgSrc} className="song-cover"/>
                           {song.name}
                           <OpenInNewIcon fontSize="inherit" className="open-new-icon"/>
                       </ListItem>)}
           </List>
-        <div className="load-more-container">
-          {moreButton}
-        </div>
+          <div className="load-more-container">
+            {moreButton}
+          </div>
         </div>
     );
   }
