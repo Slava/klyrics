@@ -6,6 +6,9 @@ import Headroom from 'react-headroom';
 import Player from './Player';
 import Toolbar from './Toolbar';
 import Lyrics from './Lyrics';
+import Artist from './Artist';
+
+import {APP} from './constants';
 
 import './App.css';
 
@@ -38,12 +41,24 @@ class App extends Component {
   }
 
   render() {
-    const tag = this.props.location.params.path;
+    const {location} = this.props;
+    const {path, type} = location.params;
+
+    const getBody = (type) => {
+      switch (type) {
+      case APP.LYRICS:
+        return <Lyrics tag={path} onVideoChange={this.onVideoChange}/>;
+      case APP.ARTIST:
+        return <Artist tag={path}/>;
+      }
+      return null;
+    };
+
     return (
       <div className="App-wrapper">
         <Headroom ><Toolbar onSelected={this.onSelected}/></Headroom>
         <div className="App">
-          <Lyrics tag={tag} onVideoChange={this.onVideoChange}/>
+          {getBody(type)}
           <Player videoId={this.state.videoId}/>
         </div>
       </div>

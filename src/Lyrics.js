@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'simple-react-router';
 import autobind from 'react-autobind';
 
 import ToggleButton, { ToggleButtonGroup } from '@material-ui/lab/ToggleButton';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import FormatSizeIcon from '@material-ui/icons/FormatSize';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
 import './Lyrics.css';
 
@@ -84,7 +86,7 @@ class Lyrics extends Component {
   }
 
   render() {
-    const {formats, lyrics, author, name, videoId} = this.state;
+    const {formats, lyrics, artist, artistId, name, videoId} = this.state;
 
     if (videoId)
       this.props.onVideoChange(videoId);
@@ -113,7 +115,9 @@ class Lyrics extends Component {
       <div className="Lyrics">
         <div className="Lyrics--header">
           <Typography variant="display1" align="center">{name}</Typography>
-          <Typography variant="caption" gutterBottom align="center">{author}</Typography>
+          <Link href={'/artist/' + artistId}>
+            <Typography variant="caption" gutterBottom align="center">{artist}<OpenInNewIcon fontSize="inherit"/></Typography>
+          </Link>
         </div>
         <Paper>
           <ToggleButtonGroup value={formats} onChange={this.handleFormats} className="Lyrics--togglebar">

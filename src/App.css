@@ -7,6 +7,10 @@ body {
     min-height: 100vh;
 }
 
+a {
+    text-decoration: none;
+}
+
 :root {
     --player-height: 50px;
 }

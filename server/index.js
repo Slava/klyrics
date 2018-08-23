@@ -36,13 +36,13 @@ function getTitle($) {
   try {
     const title = $('.entry-title').map(function () { return $(this).text(); })[0];
     const matched = title.match(/(.*) – (.*)/);
-    const author = matched[1];
+    const artist = matched[1];
     const name = matched[2];
 
-    return { author, name };
+    return { artist, name };
   } catch(err) {
     return {
-      author: null,
+      artist: null,
       name: null,
     };
   }
@@ -119,21 +119,50 @@ function getLyrics($) {
   }
 }
 
+function getMeta($) {
+  try {
+    const href = $($('.entry-meta a[rel="category tag"]')[0]).attr('href');
+    const tag = href.split('colorcodedlyrics.com/')[1];
+    return { artistId: tag };
+  } catch(err) {
+    console.log(err);
+    return {};
+  }
+}
+
 app.get('/parse', (req, res) => {
   const id = req.query.id;
   request.get('https://colorcodedlyrics.com/' + encodeURI(id), (_, __, text) => {
     const $ = cheerio.load(text);
     const videoId = getVideoId($);
-    const {author, name} = getTitle($);
+    const {artist, name} = getTitle($);
     const lyrics = getLyrics($);
+    const {artistId} = getMeta($);
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
     res.end(JSON.stringify({
       videoId,
       lyrics,
-      author,
+      artist,
       name,
+      artistId,
     }));
+  });
+});
+
+app.get('/parseArtist', (req, res) => {
+  const id = req.query.id;
+  request.get('https://colorcodedlyrics.com/' + encodeURI(id), (_, __, text) => {
+    const names = [];
+    text.replace(/"entry-title">.*<a .*href="([^\s]+)".*>(.*)<\/a>/g, (match, url, name) => {
+      const parts = url.split('/');
+      const id = parts[parts.length - 1];
+      names.push([entities.decode(name), id]);
+      return '';
+    });
+
+    res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
+    res.end(JSON.stringify(names));
   });
 });
 
