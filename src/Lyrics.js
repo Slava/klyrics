@@ -2,8 +2,33 @@ import React, { Component } from 'react';
 import autobind from 'react-autobind';
 
 import ToggleButton, { ToggleButtonGroup } from '@material-ui/lab/ToggleButton';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import './Lyrics.css';
+
+const colors = [
+  '#212121',
+  '#b71c1c',
+  '#1a237e',
+  '#004d40',
+  '#f57f17',
+  '#01579b',
+  '#880e4f',
+  '#4a148c',
+  '#e65100',
+  '#4E342E'
+];
+
+function renderParagraph(paragraph, i) {
+  if (!paragraph)
+    return null;
+  return (
+    <p id={i}>{
+        paragraph.map((x, i) => x.newline ? <br/> : <span style={{color: colors[x.styleId]}}>{x.line}</span>)
+    }</p>
+  );
+}
 
 class Lyrics extends Component {
   constructor() {
@@ -40,10 +65,10 @@ class Lyrics extends Component {
   }
 
   render() {
-    if (this.state.videoId)
-      this.props.onVideoChange(this.state.videoId);
+    const {formats, lyrics, author, name, videoId} = this.state;
 
-    const {formats, lyrics} = this.state;
+    if (videoId)
+      this.props.onVideoChange(videoId);
 
     const mapping = {
       Korean: 'kr',
@@ -57,21 +82,32 @@ class Lyrics extends Component {
       { id: 'tr', icon: 'tr', label: 'Tran', ext: 'slation' },
     ];
 
+    const fontSize = '10px';
+    const lyricKeys = Object.keys(lyrics || {}).filter(x => formats.includes(mapping[x]));
+    let nRows = 0;
+    lyricKeys.forEach(key => nRows = Math.max(nRows, lyrics[key].length));
+    const tableRows = Array.from(new Array(nRows)).map((_, i) => <tr>{lyricKeys.map(key => <td key={key}>{renderParagraph(lyrics[key][i], i)}</td>)}</tr>);
+
     return (
-        <div className="Lyrics">
+      <div className="Lyrics">
+        <div className="Lyrics--header">
+          <Typography variant="display1" align="center">{name}</Typography>
+          <Typography variant="caption" gutterBottom align="center">{author}</Typography>
+        </div>
+        <Paper>
           <ToggleButtonGroup value={formats} onChange={this.handleDisplay} className="Lyrics--togglebar">
             {buttons.map(({id, icon, label, ext}) =>
                          <ToggleButton value={id}>
                              <span className="txt-icon">{icon}</span> {label}<span className="ext">{ext}</span>
                            </ToggleButton>
-            )}
+                        )}
           </ToggleButtonGroup>
-          <div className="Lyrics--content">{
-              Object.keys(lyrics || {}).filter(x => formats.includes(mapping[x])).map(
-                key => <div dangerouslySetInnerHTML={{__html: lyrics[key]}}/>
-              )
-          }</div>
-        </div>
+          <div className="Lyrics--content" style={{fontSize}}>
+        <table>{tableRows}
+            </table>
+          </div>
+        </Paper>
+      </div>
     );
   }
 }

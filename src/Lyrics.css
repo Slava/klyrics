@@ -3,6 +3,10 @@
     overflow: auto;
 }
 
+.Lyrics--header {
+    margin: 1em;
+}
+
 .Lyrics--togglebar {
     width: 100%;
 
@@ -21,8 +25,17 @@
     display: flex;
     padding: 5px;
     padding-top: 10px;
+    background: #F5F5F5;
 
     padding-bottom: var(--player-height);
+}
+
+.Lyrics--content table {
+    margin: 0 auto;
+}
+
+.Lyrics--content td {
+    vertical-align: top;
 }
 
 .txt-icon {

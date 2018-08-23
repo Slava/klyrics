@@ -21,23 +21,118 @@ app.get('/search', (req, res) => {
   });
 });
 
+function getVideoId($) {
+  try {
+    const src = $('.youtube-player').attr('src');
+    const parts = src.split('/');
+    const videoId = parts[parts.length - 1].split('?')[0];
+    return videoId;
+  } catch(err) {
+    return null;
+  }
+}
+
+function getTitle($) {
+  try {
+    const title = $('.entry-title').map(function () { return $(this).text(); })[0];
+    const matched = title.match(/(.*) – (.*)/);
+    const author = matched[1];
+    const name = matched[2];
+
+    return { author, name };
+  } catch(err) {
+    return {
+      author: null,
+      name: null,
+    };
+  }
+}
+
+function getFormattedContents(initNode) {
+  function *traverseGenerator(node) {
+    yield node;
+    if (node.children)
+      for (let i = 0; i < node.children.length; i++) {
+        const child = node.children[i];
+        yield *traverseGenerator(child);
+      }
+  }
+
+  const it = traverseGenerator(initNode);
+  let res = it.next();
+
+  const paragraphs = [];
+  const styles = new Map();
+  let count = 0;
+  let currentStyleId = 0;
+
+  let currentParagraph = [];
+
+  while (!res.done) {
+    const node = res.value;
+    if (node.type === 'text') {
+      const line = node.data;
+      if (line !== '\n')
+        currentParagraph.push({line, styleId: currentStyleId});
+      else {
+        if (currentParagraph.length && !currentParagraph[currentParagraph.length - 1].newline)
+          currentParagraph.push({ newline: true });
+      }
+    } else if (node.type === 'tag' && node.name === 'p') {
+      if (currentParagraph.length) {
+        paragraphs.push(currentParagraph);
+        currentParagraph = [];
+      }
+    } else if (node.type === 'tag' && node.name === 'span') {
+      const {style} = node.attribs;
+      if (style && style.match(/color/)) {
+        if (styles.has(style))
+          currentStyleId = styles.get(style);
+        else {
+          currentStyleId = ++count;
+          styles.set(style, currentStyleId);
+        }
+      }
+    } else if (node.type === 'tag' && node.name === 'br') {
+      if (currentParagraph.length && !currentParagraph[currentParagraph.length - 1].newline)
+        currentParagraph.push({ newline: true });
+    }
+
+    res = it.next();
+  }
+  if (currentParagraph.length) {
+    paragraphs.push(currentParagraph);
+  }
+  return paragraphs;
+}
+
+function getLyrics($) {
+  try {
+    const lyrics = {};
+    const headings = Array.from($('table').find('th').map(function() { return $(this).text(); }));
+    const contents = Array.from($($('table')[1]).find('td'));
+    headings.forEach((heading, i) => lyrics[heading] = getFormattedContents(contents[i]));
+    return lyrics;
+  } catch(err) {
+    console.log(err)
+    return {};
+  }
+}
+
 app.get('/parse', (req, res) => {
   const id = req.query.id;
   request.get('https://colorcodedlyrics.com/' + encodeURI(id), (_, __, text) => {
     const $ = cheerio.load(text);
-    const src = $('.youtube-player').attr('src');
-    const parts = src.split('/');
-    const videoId = parts[parts.length - 1].split('?')[0];
-    const headings = Array.from($('table').find('th').map(function() { return $(this).text(); }));
-    const contents = Array.from($($('table')[1]).find('td').map(function() { return $(this).html(); }));
-
-    const lyrics = {};
-    headings.forEach((heading, i) => lyrics[heading] = contents[i]);
+    const videoId = getVideoId($);
+    const {author, name} = getTitle($);
+    const lyrics = getLyrics($);
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
     res.end(JSON.stringify({
       videoId,
       lyrics,
+      author,
+      name,
     }));
   });
 });
