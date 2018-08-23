@@ -53,9 +53,10 @@ class App extends Component {
         return <Artist tag={path}/>;
       case APP.HOMEPAGE:
         return <Homepage/>;
+      default:
+        console.error('no matching app route');
+        return null;
       }
-      console.error('no matching app route');
-      return null;
     };
 
     return (

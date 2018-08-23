@@ -7,9 +7,7 @@ import './Toolbar.css';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 
 
@@ -80,7 +78,7 @@ class ToolbarComp extends Component {
   }
 
   onSelected(event, {suggestion}) {
-    const [name, tag] = suggestion;
+    const tag = suggestion[1];
     this.props.onSelected(tag);
   }
 

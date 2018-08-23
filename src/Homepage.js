@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'simple-react-router';
-import autobind from 'react-autobind';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';

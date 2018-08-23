@@ -148,7 +148,7 @@ class Lyrics extends Component {
     return (
       <div className="Lyrics">
         <div className="Lyrics--header">
-          <img className="album-art" src={imgSrc}/>
+          <img className="album-art" src={imgSrc} alt="Album Art"/>
           <Typography variant="display1" align="center">{name}</Typography>
           <Link href={'/artist/' + artistId}>
             <Typography variant="caption" gutterBottom align="center">{artist}<OpenInNewIcon fontSize="inherit"/></Typography>
