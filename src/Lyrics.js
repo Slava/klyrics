@@ -55,7 +55,7 @@ class Lyrics extends Component {
     this.state = {
       videoId: null,
       lyrics: null,
-      formats: restoreSettings() || ['kr', 'tr'],
+      formats: restoreSettings() || ['kr', 'tr', 'text-size'],
     };
 
     autobind(this);
