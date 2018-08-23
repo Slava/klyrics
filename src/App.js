@@ -50,7 +50,10 @@ class App extends Component {
         return <Lyrics tag={path} onVideoChange={this.onVideoChange}/>;
       case APP.ARTIST:
         return <Artist tag={path}/>;
+      case APP.HOMEPAGE:
+        return <div>homepage</div>;
       }
+      console.error('no matching app route');
       return null;
     };
 
@@ -58,8 +61,8 @@ class App extends Component {
       <div className="App-wrapper">
         <Headroom ><Toolbar onSelected={this.onSelected}/></Headroom>
         <div className="App">
-          {getBody(type)}
           <Player videoId={this.state.videoId}/>
+          {getBody(type)}
         </div>
       </div>
     );

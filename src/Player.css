@@ -64,3 +64,7 @@
 .Player--controls .progress-bar > div > * {
     background-color: white;
 }
+
+.Player ~ * {
+    padding-bottom: var(--player-height);
+}

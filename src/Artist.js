@@ -10,17 +10,28 @@ class Artist extends Component {
 
     this.state = {
       songs: null,
+      nextPage: 2
     };
 
     autobind(this);
   }
 
+  fetchMore() {
+    const { nextPage, songs } = this.state;
+    const { tag } = this.props;
+
+    fetch('//localhost:8000/parseArtist?id=' + encodeURI(tag) + '&page=' + nextPage)
+      .then(res => res.json())
+      .then(json => this.setState({ songs: songs.concat(json), nextPage: nextPage + 1 }));
+  }
+
   refetch(props) {
     if (!props.tag)
       return;
+
     fetch('//localhost:8000/parseArtist?id=' + encodeURI(props.tag))
       .then(res => res.json())
-      .then(json => this.setState({ songs: json }));
+      .then(json => this.setState({ songs: json, nextPage: 2 }));
   }
 
   componentDidMount() {
@@ -37,7 +48,9 @@ class Artist extends Component {
     return (
         <div className="Artist">
           <ul>{(songs || []).map(
-            song => <li id={song[1]}><Link href={"/" + song[1]}>{song[0]}</Link></li>)}</ul>
+            song => <li id={song[1]}><Link href={"/" + song[1]}>{song[0]}</Link></li>)}
+          </ul>
+          <button onClick={this.fetchMore}>Load more</button>
         </div>
     );
   }

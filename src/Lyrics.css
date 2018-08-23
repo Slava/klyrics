@@ -31,8 +31,6 @@
     padding: 5px;
     padding-top: 10px;
     background: #F5F5F5;
-
-    padding-bottom: var(--player-height);
 }
 
 .Lyrics--content.small {

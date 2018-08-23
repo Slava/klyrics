@@ -126,7 +126,7 @@ function getMeta($) {
     return { artistId: tag };
   } catch(err) {
     console.log(err);
-    return {};
+    return { artistId: null };
   }
 }
 
@@ -151,8 +151,9 @@ app.get('/parse', (req, res) => {
 });
 
 app.get('/parseArtist', (req, res) => {
-  const id = req.query.id;
-  request.get('https://colorcodedlyrics.com/' + encodeURI(id), (_, __, text) => {
+  const {id, page} = req.query;
+  const pagePart = page ? `/page/${page}` : '';
+  request.get(`https://colorcodedlyrics.com/${encodeURI(id)}${pagePart}`, (_, __, text) => {
     const names = [];
     text.replace(/"entry-title">.*<a .*href="([^\s]+)".*>(.*)<\/a>/g, (match, url, name) => {
       const parts = url.split('/');
