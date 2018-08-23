@@ -8,6 +8,17 @@ import FormatSizeIcon from '@material-ui/icons/FormatSize';
 
 import './Lyrics.css';
 
+const SETTINGS_KEY = 'LYRICS_SAVED_SETTINGS';
+
+function saveSettings(settings) {
+  window.localStorage && window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+function restoreSettings() {
+  const saved = window.localStorage && window.localStorage.getItem(SETTINGS_KEY);
+  return saved ? JSON.parse(saved) : null;
+}
+
 const colors = [
   '#212121',
   '#b71c1c',
@@ -42,7 +53,7 @@ class Lyrics extends Component {
     this.state = {
       videoId: null,
       lyrics: null,
-      formats: ['kr', 'tr'],
+      formats: restoreSettings() || ['kr', 'tr'],
     };
 
     autobind(this);
@@ -65,9 +76,11 @@ class Lyrics extends Component {
       this.refetch(nextProps);
   }
 
-  handleDisplay(formats) {
-    if (formats && formats.length)
+  handleFormats(formats) {
+    if (formats && formats.length) {
       this.setState({formats});
+      saveSettings(formats);
+    }
   }
 
   render() {
@@ -103,13 +116,13 @@ class Lyrics extends Component {
           <Typography variant="caption" gutterBottom align="center">{author}</Typography>
         </div>
         <Paper>
-          <ToggleButtonGroup value={formats} onChange={this.handleDisplay} className="Lyrics--togglebar">
+          <ToggleButtonGroup value={formats} onChange={this.handleFormats} className="Lyrics--togglebar">
             {buttons.map(({id, icon, label, ext}) =>
                          <ToggleButton value={id} key={id}>
                              <span className="txt-icon">{icon}</span> {label}<span className="ext">{ext}</span>
                            </ToggleButton>
                         )}
-            <ToggleButton value="text-size" className="format-size-button" onChange={this.handleDisplay}>
+            <ToggleButton value="text-size" className="format-size-button" onChange={this.handleFormats}>
               <FormatSizeIcon/>
             </ToggleButton>
           </ToggleButtonGroup>
