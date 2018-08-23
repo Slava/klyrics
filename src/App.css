@@ -1,18 +1,10 @@
-html, body, #root, .App {
-    height: 100%;
-}
-
-.App {
-    min-height: 100vh;
-}
 
 body {
-    overflow: hidden;
+    overflow: auto;
 }
 
-.App {
-  display: flex;
-  flex-direction: column;
+.App-wrapper {
+    min-height: 100vh;
 }
 
 :root {

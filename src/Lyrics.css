@@ -1,6 +1,4 @@
 .Lyrics {
-    flex: 1 1 auto;
-    overflow: auto;
 }
 
 .Lyrics--header {
@@ -8,7 +6,9 @@
 }
 
 .Lyrics--togglebar {
+    max-width: 800px;
     width: 100%;
+    margin: 0 auto;
 
     display: flex;
 }
@@ -41,6 +41,18 @@
 
 .Lyrics--content.large {
     font-size: 20px;
+}
+
+@media(min-width: 1000px) {
+    .Lyrics--content td {
+        padding: 0 2em;
+    }
+}
+
+@media(min-width: 600px) {
+    .Lyrics--content td {
+        padding: 0 1em;
+    }
 }
 
 @media(max-width: 414px) {

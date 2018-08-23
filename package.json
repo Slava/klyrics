@@ -13,6 +13,7 @@
     "react-autobind": "^1.0.6",
     "react-autosuggest": "^9.3.4",
     "react-dom": "^16.4.0",
+    "react-headroom": "^2.2.2",
     "react-scripts": "1.1.1",
     "react-youtube-player": "^2.0.1",
     "simple-react-router": "^0.0.17"

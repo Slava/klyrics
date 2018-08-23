@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import autobind from 'react-autobind';
 
+import Headroom from 'react-headroom';
+
 import Player from './Player';
 import Toolbar from './Toolbar';
 import Lyrics from './Lyrics';
@@ -16,6 +18,10 @@ class App extends Component {
     };
 
     autobind(this);
+  }
+
+  getWrapper() {
+    return this.wrapperRef && this.wrapperRef.current;
   }
 
   onSelected(tag) {
@@ -34,10 +40,12 @@ class App extends Component {
   render() {
     const tag = this.props.location.params.path;
     return (
-      <div className="App">
-        <Toolbar onSelected={this.onSelected}/>
-        <Lyrics tag={tag} onVideoChange={this.onVideoChange}/>
-        <Player videoId={this.state.videoId}/>
+      <div className="App-wrapper">
+        <Headroom ><Toolbar onSelected={this.onSelected}/></Headroom>
+        <div className="App">
+          <Lyrics tag={tag} onVideoChange={this.onVideoChange}/>
+          <Player videoId={this.state.videoId}/>
+        </div>
       </div>
     );
   }
