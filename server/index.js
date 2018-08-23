@@ -5,6 +5,10 @@ const cheerio = require('cheerio');
 
 const app = express();
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("../build"));
+}
+
 app.get('/api/search', (req, res) => {
   const input = req.query.q;
   request.get('https://colorcodedlyrics.com/?s=' + encodeURI(input), (_, __, text) => {
