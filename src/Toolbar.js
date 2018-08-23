@@ -35,7 +35,7 @@ class ToolbarComp extends Component {
 
   onSuggestionsFetchRequested({ value }) {
     const version = this.state.searchVersion;
-    fetch('//localhost:8000/search?q=' + value)
+    fetch('/api/search?q=' + value)
       .then(res => res.json())
       .then(json => {
         if (this.state.searchVersion === version)

@@ -8,5 +8,8 @@
     "express": "^4.16.3",
     "html-entities": "^1.2.1",
     "request": "^2.85.0"
+  },
+  "scripts": {
+    "start": "PORT=3001 node index.js"
   }
 }

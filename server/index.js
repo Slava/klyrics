@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 
 const app = express();
 
-app.get('/search', (req, res) => {
+app.get('/api/search', (req, res) => {
   const input = req.query.q;
   request.get('https://colorcodedlyrics.com/?s=' + encodeURI(input), (_, __, text) => {
     const names = [];
@@ -157,7 +157,7 @@ function getMeta($) {
   }
 }
 
-app.get('/parse', (req, res) => {
+app.get('/api/parse', (req, res) => {
   const id = req.query.id;
   request.get('https://colorcodedlyrics.com/' + encodeURI(id), (_, __, text) => {
     const $ = cheerio.load(text);
@@ -179,7 +179,7 @@ app.get('/parse', (req, res) => {
   });
 });
 
-app.get('/parseArtist', (req, res) => {
+app.get('/api/parseArtist', (req, res) => {
   const {id, page} = req.query;
   const pagePart = page ? `/page/${page}` : '';
   request.get(`https://colorcodedlyrics.com/${encodeURI(id)}${pagePart}`, (_, __, text) => {
@@ -203,6 +203,6 @@ app.get('/parseArtist', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));

@@ -68,7 +68,7 @@ class Lyrics extends Component {
     if (!props.tag)
       return;
     this.setState({fetching: true}, () => {
-      fetch('//localhost:8000/parse?id=' + encodeURI(props.tag))
+      fetch('/api/parse?id=' + encodeURI(props.tag))
         .then(res => res.json())
         .then(json => this.setState(Object.assign({fetching: false}, json)));
     });

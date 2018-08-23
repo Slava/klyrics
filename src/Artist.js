@@ -31,7 +31,7 @@ class Artist extends Component {
     const { tag } = this.props;
 
     this.setState({ fetching: true }, () => {
-      fetch('//localhost:8000/parseArtist?id=' + encodeURI(tag) + '&page=' + nextPage)
+      fetch('/api/parseArtist?id=' + encodeURI(tag) + '&page=' + nextPage)
         .then(res => res.json())
         .then(json => {
           this.setState({
@@ -47,7 +47,7 @@ class Artist extends Component {
     if (!props.tag)
       return;
 
-    fetch('//localhost:8000/parseArtist?id=' + encodeURI(props.tag))
+    fetch('/api/parseArtist?id=' + encodeURI(props.tag))
       .then(res => res.json())
       .then(json => this.setState({ songs: json, nextPage: 2 }));
   }

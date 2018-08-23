@@ -2,10 +2,12 @@
   "name": "klyrics",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001/",
   "dependencies": {
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^2.0.3",
     "@material-ui/lab": "^1.0.0-alpha.11",
+    "concurrently": "^3.6.1",
     "debounce": "^1.2.0",
     "prop-types": "^15.6.2",
     "punycode": "^2.1.0",
@@ -19,7 +21,7 @@
     "simple-react-router": "^0.0.17"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"cd server && yarn start\"",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
