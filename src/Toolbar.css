@@ -7,9 +7,10 @@
     margin-right: 0.5em;
 }
 
-.Toolbar .close-icon-button {
-    color: white;
-    margin-left: 1em;
+.Toolbar--toolbar {
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
 }
 
 .react-autosuggest__container {

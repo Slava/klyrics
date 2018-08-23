@@ -119,16 +119,33 @@ function getLyrics($) {
   }
 }
 
-function getMeta($) {
-  let imgSrc = null;
+function getImage($) {
   try {
-    const imgSrc = $($('img[title="Album art"]')[0]).attr('src');
+    let albumArt = $('img[title="Album art"]')[0];
+
+    if (!albumArt) {
+      const imgs = $('img').filter(function () {
+        const className = this.attribs.class;
+        return className && (className.indexOf('wp-image-') !== -1 || className.indexOf('alignright') !== -1);
+      });
+      albumArt = imgs[0];
+    }
+
+    return { imgSrc: albumArt.attribs.src };
+  } catch (err) {
+    console.log(err);
+    return { imgSrc: null };
+  }
+}
+
+function getMeta($) {
+  try {
     const href = $($('.entry-meta a[rel="category tag"]')[0]).attr('href');
     const tag = href.split('colorcodedlyrics.com/')[1];
-    return { artistId: tag, imgSrc };
+    return { artistId: tag };
   } catch(err) {
     console.log(err);
-    return { artistId: null, imgSrc };
+    return { artistId: null };
   }
 }
 
@@ -139,7 +156,8 @@ app.get('/parse', (req, res) => {
     const videoId = getVideoId($);
     const {artist, name} = getTitle($);
     const lyrics = getLyrics($);
-    const {artistId, imgSrc} = getMeta($);
+    const {artistId} = getMeta($);
+    const {imgSrc} = getImage($);
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
     res.end(JSON.stringify({

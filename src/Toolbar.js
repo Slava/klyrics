@@ -94,7 +94,7 @@ class ToolbarComp extends Component {
     return (
         <div className="Toolbar">
           <AppBar position="static">
-            <Toolbar>
+            <Toolbar className="Toolbar--toolbar">
               <SearchIcon className="search-icon"/>
               <Autosuggest
                 suggestions={this.state.suggestions}
@@ -106,9 +106,6 @@ class ToolbarComp extends Component {
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
                 />
-              <IconButton className="close-icon-button">
-                <CloseIcon className="close-icon"/>
-              </IconButton>
             </Toolbar>
           </AppBar>
         </div>

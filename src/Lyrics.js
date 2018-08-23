@@ -141,6 +141,8 @@ class Lyrics extends Component {
       (_, i) => <tr key={i}>{lyricKeys.map(
         key => <td key={key}>{renderParagraph(lyrics[key][i], i)}</td>)}</tr>);
 
+    const tableClass = lyricKeys.length < 3 ? 'compact' : '';
+
     return (
       <div className="Lyrics">
         <div className="Lyrics--header">
@@ -162,7 +164,7 @@ class Lyrics extends Component {
             </ToggleButton>
           </ToggleButtonGroup>
           <div className={'Lyrics--content ' + fontSizeClass}>
-            <table><tbody>{tableRows}</tbody></table>
+            <table className={tableClass}><tbody>{tableRows}</tbody></table>
           </div>
         </Paper>
       </div>
