@@ -1,4 +1,5 @@
 .Artist {
+    max-width: 800px;
 }
 
 .Artist--header {
