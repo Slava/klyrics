@@ -3,11 +3,22 @@ const request = require('request');
 const entities = new require('html-entities').AllHtmlEntities;
 const cheerio = require('cheerio');
 const path = require('path');
+const LRU = require('lru-cache');
+
+const searchCache = LRU({ max: 1000, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
+const pageCache = LRU({ max: 10000, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
+const artistCache = LRU({ max: 300, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
 
 const app = express();
 
 app.get('/api/search', (req, res) => {
   const input = req.query.q;
+  const cached = searchCache.get(input);
+  if (cached) {
+    res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
+    return res.end(JSON.stringify(cached));
+  }
+
   request.get('https://colorcodedlyrics.com/?s=' + encodeURI(input), (_, __, text) => {
     const names = [];
     text.replace(/"entry-title">.*<a .*href="([^\s]+)".*>(.*)<\/a>/g, (match, url, name) => {
@@ -16,6 +27,8 @@ app.get('/api/search', (req, res) => {
       names.push([entities.decode(name), id]);
       return '';
     });
+
+    searchCache.set(input, names);
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
     res.end(JSON.stringify(names));
@@ -164,6 +177,12 @@ function getMeta($) {
 
 app.get('/api/parse', (req, res) => {
   const id = req.query.id;
+  const cached = pageCache.get(id);
+  if (cached) {
+    res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
+    return res.end(JSON.stringify(cached));
+  }
+
   request.get('https://colorcodedlyrics.com/' + encodeURI(id), (_, __, text) => {
     const $ = cheerio.load(text);
     const videoId = getVideoId($);
@@ -173,20 +192,30 @@ app.get('/api/parse', (req, res) => {
     const {imgSrc} = getImage($);
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
-    res.end(JSON.stringify({
+    const obj = {
       videoId,
       lyrics,
       artist,
       name,
       artistId,
       imgSrc,
-    }));
+    };
+    pageCache.set(id, obj);
+    res.end(JSON.stringify(obj));
   });
 });
 
 app.get('/api/parseArtist', (req, res) => {
   const {id, page} = req.query;
   const pagePart = page ? `/page/${page}` : '';
+
+  const key = id + '/' + page;
+  const cached = artistCache.get(key);
+  if (cached) {
+    res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
+    return res.end(JSON.stringify(cached));
+  }
+
   request.get(`https://colorcodedlyrics.com/${encodeURI(id)}${pagePart}`, (_, __, text) => {
     const $ = cheerio.load(text);
     const items = Array.from($('.entry-title a')).map((a) => {
@@ -202,6 +231,8 @@ app.get('/api/parseArtist', (req, res) => {
 
       return {name, id, imgSrc};
     });
+
+    artistCache.set(key, items);
 
     res.set({ 'content-type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' })
     res.end(JSON.stringify(items));
