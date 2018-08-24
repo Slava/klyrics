@@ -149,7 +149,11 @@ function getImage($) {
 
 function getMeta($) {
   try {
-    const href = $($('.entry-meta a[rel="category tag"]')[0]).attr('href');
+    const hrefs = Array.from($('.entry-meta a[rel="category tag"]').map(function () { return $(this).attr('href'); }).filter(function () { return this.indexOf('/category/') !== -1; }));
+
+    hrefs.sort((a, b) => b.length - a.length);
+    const href = hrefs[0];
+
     const tag = href.split('colorcodedlyrics.com/')[1];
     return { artistId: tag };
   } catch(err) {
