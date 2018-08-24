@@ -12,6 +12,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import TrendingUpIcon from '@material-ui/icons/InsertChartOutlined';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 
 class ToolbarComp extends Component {
@@ -45,7 +46,7 @@ class ToolbarComp extends Component {
   }
 
   renderInputComponent(inputProps) {
-    const { inputRef = () => {}, ref, ...other } = inputProps;
+    const { inputRef = () => {}, ref, InputProps, ...other } = inputProps;
 
     return (
       <TextField
@@ -55,7 +56,8 @@ class ToolbarComp extends Component {
             ref(node);
             inputRef(node);
           },
-          className: "react-autosuggest__input"
+          className: "react-autosuggest__input",
+          ...InputProps
         }}
         {...other}
         />
@@ -89,14 +91,16 @@ class ToolbarComp extends Component {
     const inputProps = {
       placeholder: 'Search...',
       value: this.state.value,
-      onChange: this.onChange
+      onChange: this.onChange,
+      InputProps: {
+        startAdornment: <InputAdornment position="start"><SearchIcon className="search-icon"/></InputAdornment>,
+      },
     };
 
     return (
         <div className="Toolbar">
           <AppBar position="static">
             <Toolbar className="Toolbar--toolbar">
-              <SearchIcon className="search-icon"/>
               <Autosuggest
                 suggestions={this.state.suggestions}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
