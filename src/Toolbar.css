@@ -11,6 +11,7 @@
     margin: 0 auto;
     max-width: 800px;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .react-autosuggest__container {
