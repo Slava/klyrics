@@ -5,10 +5,6 @@ const cheerio = require('cheerio');
 
 const app = express();
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("../build"));
-}
-
 app.get('/api/search', (req, res) => {
   const input = req.query.q;
   request.get('https://colorcodedlyrics.com/?s=' + encodeURI(input), (_, __, text) => {
@@ -206,6 +202,14 @@ app.get('/api/parseArtist', (req, res) => {
     res.end(JSON.stringify(items));
   });
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("../build"));
+  app.get('*', (req, res, next) => {
+    if (req.url.starts.with('/api/')) return next();
+    res.sendFile(path.join(__dirname + '/../build/index.html'));
+  });
+}
 
 const PORT = process.env.PORT || 3001;
 
