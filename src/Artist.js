@@ -80,7 +80,7 @@ class Artist extends Component {
       name = songs[0].name.replace(/Lyrics Index/g, '').trim();
     } catch (err) {
     } finally {
-      const match = name.match(/(.*)\((.*)\)/);
+      const match = name && name.match(/(.*)\((.*)\)/);
       if (match) {
         name = match[1];
         subname = match[2];
