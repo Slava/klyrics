@@ -75,6 +75,7 @@ class ToolbarComp extends Component {
   onClear() {
     this.setState({
       searchVersion: this.state.searchVersion + 1,
+      suggestions: [],
     });
 
     this.setState({
