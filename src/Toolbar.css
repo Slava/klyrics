@@ -7,6 +7,12 @@
     margin-right: 0.5em;
 }
 
+.Toolbar .trending-icon {
+    font-size: 1.3em;
+    margin-left: 0.5em;
+    color: white;
+}
+
 .Toolbar--toolbar {
     margin: 0 auto;
     max-width: 800px;

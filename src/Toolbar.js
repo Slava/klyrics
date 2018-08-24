@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'simple-react-router';
 import Autosuggest from 'react-autosuggest';
 import autobind from 'react-autobind';
 import debounce from 'debounce';
@@ -8,7 +9,9 @@ import './Toolbar.css';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import SearchIcon from '@material-ui/icons/Search';
+import TrendingUpIcon from '@material-ui/icons/InsertChartOutlined';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
 
 
 class ToolbarComp extends Component {
@@ -104,6 +107,9 @@ class ToolbarComp extends Component {
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
                 />
+              <IconButton href="/" component={Link}>
+                <TrendingUpIcon className="trending-icon"/>
+              </IconButton>
             </Toolbar>
           </AppBar>
         </div>
