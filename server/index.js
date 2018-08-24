@@ -2,6 +2,7 @@ const express = require('express');
 const request = require('request');
 const entities = new require('html-entities').AllHtmlEntities;
 const cheerio = require('cheerio');
+const path = require('path');
 
 const app = express();
 
@@ -206,7 +207,7 @@ app.get('/api/parseArtist', (req, res) => {
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("../build"));
   app.get('*', (req, res, next) => {
-    if (req.url.starts.with('/api/')) return next();
+    if (req.url.startsWith('/api/')) return next();
     res.sendFile(path.join(__dirname + '/../build/index.html'));
   });
 }
