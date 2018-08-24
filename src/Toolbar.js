@@ -112,8 +112,8 @@ class ToolbarComp extends Component {
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
                 />
-              <IconButton href="/" component={Link}>
-                <TrendingUpIcon className="trending-icon"/>
+              <IconButton className="trending-icon" href="/" component={Link}>
+                <TrendingUpIcon/>
               </IconButton>
             </Toolbar>
           </AppBar>
