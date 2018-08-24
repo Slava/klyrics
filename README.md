@@ -18,8 +18,10 @@ The app, on the other hand, is nice and relatively clean.
 
 ## Development
 
+
 ```
 yarn install
+cd server && yarn install && cd ..
 yarn start
 ```
 
