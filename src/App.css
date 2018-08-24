@@ -3,8 +3,17 @@ body {
     overflow: auto;
 }
 
+html, body, #root, .App-wrapper {
+    height: 100%;
+}
+
+.App {
+    height: calc(100% - 64px);
+}
+
 .App-wrapper {
     min-height: 100vh;
+    box-sizing: border-box;
 }
 
 a {
@@ -14,6 +23,7 @@ a {
 
 * {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    box-sizing: border-box;
 }
 
 :root {

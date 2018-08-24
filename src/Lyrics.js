@@ -154,7 +154,7 @@ class Lyrics extends Component {
             <Typography variant="caption" gutterBottom align="center">{artist}<OpenInNewIcon fontSize="inherit"/></Typography>
           </Link>
         </div>
-        <Paper>
+        <Paper className="Lyrics--body">
           <ToggleButtonGroup value={formats} onChange={this.handleFormats} className="Lyrics--togglebar">
             {buttons.map(({id, icon, label, ext}) =>
                          <ToggleButton value={id} key={id}>

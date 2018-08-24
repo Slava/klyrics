@@ -1,8 +1,16 @@
 .Lyrics {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .Lyrics--header {
     margin: 1em;
+    flex: 0;
+}
+
+.Lyrics--body {
+    flex: 1;
 }
 
 .Lyrics--header .album-art {
@@ -45,6 +53,7 @@
     padding: 5px;
     padding-top: 10px;
     background: #F5F5F5;
+    height: 100%;
 }
 
 .Lyrics--content.small {
