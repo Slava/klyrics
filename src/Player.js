@@ -115,6 +115,7 @@ class Player extends Component {
             controls: 0,
             modestBranding: 1,
             autoplay: 1,
+            playsinline: 1,
           }
         }
         ref={this.yp}
