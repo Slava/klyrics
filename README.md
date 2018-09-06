@@ -2,9 +2,13 @@
 
 A Kpop music player, served with Korean and English lyrics.
 
-The original frustration stemmed from my personal frustration browsing lyrics on my phone, while listening to music. Any website I could find serving Korean lyrics either didn't have a quality translation, or would display it poorly, or would just look horribly unusable on mobile.
+The original motivation stemmed from my personal frustration browsing lyrics on my phone, while listening to music. Any website I could find serving Korean lyrics either didn't have a quality translation, or would display it poorly, or would just look horribly unusable on mobile.
+
+As a result I took on a task of creating an ultimate music player for K-pop lovers: it looks great, has a huge database of songs and can provide you Korean lyrics and translations side by side in a format that's easy to use on mobile.
 
 I worked on Klyrics as part of my week-long participation in Hack Lodge.
+
+## Project structure
 
 There are two parts of the project:
 
