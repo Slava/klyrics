@@ -5,9 +5,9 @@ const cheerio = require('cheerio');
 const path = require('path');
 const LRU = require('lru-cache');
 
-const searchCache = LRU({ max: 1000, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
-const pageCache = LRU({ max: 10000, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
-const artistCache = LRU({ max: 300, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
+const searchCache = new LRU({ max: 1000, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
+const pageCache = new LRU({ max: 10000, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
+const artistCache = new LRU({ max: 300, length: () => 1, maxAge: 1000 * 60 * 60 * 24 });
 
 const app = express();
 
