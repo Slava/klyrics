@@ -240,7 +240,7 @@ app.get('/api/parseArtist', (req, res) => {
 });
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("../build"));
+  app.use(express.static("./build"));
   app.get('*', (req, res, next) => {
     if (req.url.startsWith('/api/')) return next();
     res.sendFile(path.join(__dirname + '/../build/index.html'));
